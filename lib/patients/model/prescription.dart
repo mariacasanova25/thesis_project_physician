@@ -12,6 +12,7 @@ class Prescription {
       required this.takenMeds,
       required this.id,
       required this.physicianId,
+      required this.medicationId,
       required this.motive});
 
   final String name;
@@ -22,6 +23,7 @@ class Prescription {
   final int frequency;
   final String motive;
   final String physicianId;
+  final String medicationId;
   final List<String> times;
   final Map<String, List<String>> takenMeds;
 
@@ -39,18 +41,20 @@ class Prescription {
         (data['times'] as List?)?.cast<String>().toList() ?? [];
 
     return Prescription(
-        name: data['name'],
-        dosage: data['dosage'],
-        endDate: DateTime(data['endDate'].toDate().year,
-            data['endDate'].toDate().month, data['endDate'].toDate().day),
-        frequency: data['frequency'],
-        startDate: DateTime(data['startDate'].toDate().year,
-            data['startDate'].toDate().month, data['startDate'].toDate().day),
-        times: times,
-        takenMeds: takenMeds,
-        id: snapshot.id,
-        motive: data['motive'],
-        physicianId: data['physicianId']);
+      name: data['name'],
+      dosage: data['dosage'],
+      endDate: DateTime(data['endDate'].toDate().year,
+          data['endDate'].toDate().month, data['endDate'].toDate().day),
+      frequency: data['frequency'],
+      startDate: DateTime(data['startDate'].toDate().year,
+          data['startDate'].toDate().month, data['startDate'].toDate().day),
+      times: times,
+      takenMeds: takenMeds,
+      id: snapshot.id,
+      motive: data['motive'],
+      physicianId: data['physicianId'],
+      medicationId: data['medicationId'],
+    );
   }
 
   double getAdherence(DateTime date) {

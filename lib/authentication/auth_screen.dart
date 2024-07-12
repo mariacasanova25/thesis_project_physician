@@ -38,7 +38,7 @@ class _AuthScreenState extends State<AuthScreen> {
             .set({
           'username': _enteredUsername,
           'email': _enteredEmail,
-          'role': 'physician',
+          'role': 'Médico',
           'personNr': _enteredPhysicianNr
         });
       }

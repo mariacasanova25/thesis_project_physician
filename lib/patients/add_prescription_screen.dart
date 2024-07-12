@@ -33,8 +33,7 @@ class _AddPrescriptionScreenState extends ConsumerState<AddPrescriptionScreen> {
         .collection('users')
         .doc(widget.patiendId)
         .collection('medications')
-        .doc(selectedMedicationId)
-        .set({
+        .add({
       'name': selectedMedication,
       'startDate': DateTime(
           DateTime.now().year, DateTime.now().month, DateTime.now().day),
@@ -47,6 +46,7 @@ class _AddPrescriptionScreenState extends ConsumerState<AddPrescriptionScreen> {
       'physicianId': user.uid,
       'takenMeds': takenMeds,
       'motive': motive,
+      'medicationId': selectedMedicationId
     });
 
     ScaffoldMessenger.of(context).showSnackBar(
