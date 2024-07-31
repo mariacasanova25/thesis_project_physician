@@ -17,7 +17,6 @@ class DiscussionDetailsScreen extends ConsumerWidget {
   final String discussionId;
 
   Future<Map<String, dynamic>?> getUserData(String userId) async {
-    print(userId);
     final userData =
         await FirebaseFirestore.instance.collection('users').doc(userId).get();
     return userData.data();
@@ -32,19 +31,22 @@ class DiscussionDetailsScreen extends ConsumerWidget {
       appBar: AppBar(
         title: Text(discussionName),
       ),
-      body: messagesAsync.when(
-        data: (messages) {
-          if (messages.isEmpty) {
-            return const Center(child: Text('No messages found.'));
-          }
+      body: Column(
+        children: [
+          Expanded(
+            child: messagesAsync.when(
+              data: (messages) {
+                if (messages.isEmpty) {
+                  return const Center(
+                      child: Text(
+                          'Esta discussão ainda não tem mensagens. Inicie a conversa.'));
+                }
 
-          // Cache to store user data
-          final Map<String, Future<Map<String, dynamic>?>> userDataCache = {};
+                // Cache to store user data
+                final Map<String, Future<Map<String, dynamic>?>> userDataCache =
+                    {};
 
-          return Column(
-            children: [
-              Expanded(
-                child: ListView.builder(
+                return ListView.builder(
                   padding: const EdgeInsets.only(
                     bottom: 40,
                     left: 13,
@@ -111,18 +113,18 @@ class DiscussionDetailsScreen extends ConsumerWidget {
                       },
                     );
                   },
-                ),
-              ),
-              NewMessage(discussion: discussionId)
-            ],
-          );
-        },
-        error: (error, stackTrace) {
-          return const SizedBox(
-            width: 10,
-          );
-        },
-        loading: () => const Center(child: CircularProgressIndicator()),
+                );
+              },
+              error: (error, stackTrace) {
+                return const SizedBox(
+                  width: 10,
+                );
+              },
+              loading: () => const Center(child: CircularProgressIndicator()),
+            ),
+          ),
+          NewMessage(discussion: discussionId),
+        ],
       ),
     );
   }

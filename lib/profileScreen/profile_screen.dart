@@ -18,43 +18,60 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
     final userAsync = ref.watch(watchAuthUserProvider);
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Perfil'),
-        ),
-        body: userAsync.when(
+      appBar: AppBar(
+        title: const Text('Perfil'),
+        actions: [
+          IconButton(
+            onPressed: () {
+              FirebaseAuth.instance.signOut();
+              Navigator.pop(context);
+            },
+            icon: const Icon(Icons.logout),
+          )
+        ],
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: userAsync.when(
           data: (user) {
-            return Center(
+            return SingleChildScrollView(
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Icon(Icons.person_2, size: 64),
-                  const SizedBox(height: 8),
-                  Text(
-                    user.username,
-                    style: const TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: 24),
+                  const Center(
+                    child: Column(
+                      children: [
+                        CircleAvatar(
+                          radius: 44,
+                          child: Icon(Icons.account_circle, size: 88),
+                        ),
+                        SizedBox(height: 16),
+                      ],
+                    ),
                   ),
-                  const SizedBox(height: 8),
-                  Text(user.role),
-                  const SizedBox(height: 8),
-                  Text('Número de Utente: ${user.personNr}'),
+                  const SizedBox(height: 32),
+                  Text('Nome', style: textTheme.headlineSmall),
+                  Text(user.username, style: textTheme.headlineLarge),
                   const SizedBox(height: 16),
-                  OutlinedButton.icon(
-                    onPressed: () {
-                      FirebaseAuth.instance.signOut();
-                    },
-                    label: const Text('Terminar Sessão'),
-                    icon: const Icon(Icons.logout),
-                  )
+                  Text('Função', style: textTheme.headlineSmall),
+                  Text(user.role, style: textTheme.headlineLarge),
+                  const SizedBox(height: 16),
+                  Text('Cédula Profissional', style: textTheme.headlineSmall),
+                  Text(user.personNr, style: textTheme.headlineLarge),
                 ],
               ),
             );
           },
-          error: (error, stackTrace) => const SizedBox(
-            width: 10,
+          error: (error, stackTrace) => Center(
+            child:
+                Text('Erro ao carregar perfil', style: textTheme.headlineLarge),
           ),
           loading: () => const CircularProgressIndicator(),
-        ));
+        ),
+      ),
+    );
   }
 }
