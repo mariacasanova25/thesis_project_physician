@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:thesis_project_physician/communityForum/NewDiscussionButton.dart';
+import 'package:thesis_project_physician/communityForum/add_discussion_button.dart';
 import 'package:thesis_project_physician/communityForum/data/discussions_repository.dart';
 import 'package:thesis_project_physician/communityForum/discussions_list.dart';
 import 'package:thesis_project_physician/communityForum/model/discussion.dart';
@@ -20,86 +20,89 @@ class _CommunityForumScreenState extends ConsumerState<CommunityForumScreen> {
   final TextEditingController _searchController = TextEditingController();
 
   void _filterDiscussions(String query) {
-    if (query.isEmpty) {
-      setState(() {
+    setState(() {
+      if (query.isEmpty) {
         _filteredDiscussions = _allDiscussions;
-      });
-    } else {
-      setState(() {
+      } else {
         _filteredDiscussions = _allDiscussions.where((discussion) {
           final queryLower = query.toLowerCase();
           final nameMatches =
               discussion.name.toLowerCase().contains(queryLower);
-
           return nameMatches;
         }).toList();
-      });
-    }
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     final discussionsAsync = ref.watch(watchDiscussionsProvider);
     return Scaffold(
-        appBar: AppBar(
-          title: _isSearchBarVisible
-              ? TextField(
-                  controller: _searchController,
-                  onChanged: (query) => _filterDiscussions(query),
-                  decoration: InputDecoration(
-                    hintText: 'Pesquisar...',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                    filled: true,
-                    fillColor: Colors.white,
-                    prefixIcon: const Icon(Icons.search),
+      appBar: AppBar(
+        title: _isSearchBarVisible
+            ? TextField(
+                controller: _searchController,
+                onChanged: _filterDiscussions,
+                decoration: InputDecoration(
+                  hintText: 'Pesquisar...',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.0),
                   ),
-                )
-              : Text(
-                  "Discussões",
-                  style: TextStyle(
-                    fontSize: 24,
-                    color: Theme.of(context).colorScheme.primary,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  filled: true,
+                  fillColor: Colors.white,
+                  prefixIcon: const Icon(Icons.search),
                 ),
-          actions: [
-            IconButton(
-              icon: Icon(_isSearchBarVisible ? Icons.close : Icons.search),
-              onPressed: () {
-                setState(() {
-                  _isSearchBarVisible = !_isSearchBarVisible;
-                  if (!_isSearchBarVisible) {
-                    _searchController.clear();
-                    _filterDiscussions('');
-                  }
-                });
-              },
-            ),
-          ],
-        ),
-        body: discussionsAsync.when(
-          data: (discussions) {
-            _allDiscussions = discussions;
-            _filteredDiscussions = _filteredDiscussions.isNotEmpty
-                ? _filteredDiscussions
-                : discussions;
-            if (_filteredDiscussions.isEmpty) {
-              return const Center(
-                child: Text('Não foram encontradas discussões.'),
-              );
-            }
-            return DiscussionsList(discussions: _filteredDiscussions);
-          },
-          error: (error, _) => const Center(
-            child: Text('Erro ao carregar discussões.'),
+              )
+            : Text(
+                "Discussões",
+                style: TextStyle(
+                  fontSize: 24,
+                  color: Theme.of(context).colorScheme.primary,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+        actions: [
+          IconButton(
+            icon: Icon(_isSearchBarVisible ? Icons.close : Icons.search),
+            onPressed: () {
+              setState(() {
+                _isSearchBarVisible = !_isSearchBarVisible;
+                if (!_isSearchBarVisible) {
+                  _searchController.clear();
+                  _filterDiscussions('');
+                }
+              });
+            },
           ),
-          loading: () => const Center(
-            child: CircularProgressIndicator(),
-          ),
+        ],
+      ),
+      body: discussionsAsync.when(
+        data: (discussions) {
+          _allDiscussions = discussions;
+
+          // Reapply search filter if there's an active query
+          if (_searchController.text.isNotEmpty) {
+            _filterDiscussions(_searchController.text);
+          } else {
+            _filteredDiscussions = _allDiscussions;
+          }
+
+          if (_filteredDiscussions.isEmpty) {
+            return const Center(
+              child: Text('Não foram encontradas discussões.'),
+            );
+          }
+          return DiscussionsList(discussions: _filteredDiscussions);
+        },
+        error: (error, _) => const Center(
+          child: Text('Erro ao carregar discussões.'),
         ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-        floatingActionButton: const NewdiscussionButton());
+        loading: () => const Center(
+          child: CircularProgressIndicator(),
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: const AddDiscussionButton(),
+    );
   }
 }

@@ -8,22 +8,22 @@ class UserModel {
       required this.personNr,
       required this.role,
       required this.username,
-      this.bornDate});
+      this.birthDate});
 
   final String username;
   final String userId;
   final String email;
   final String role;
-  final String? bornDate;
+  final String? birthDate;
   final String personNr;
 
   factory UserModel.fromSnapshot(
       DocumentSnapshot<Map<String, dynamic>> snapshot) {
     final data = snapshot.data()!;
-    String? bornDate;
-    if (data['bornDate'] != null) {
+    String? birthDate;
+    if (data['birthDate'] != null) {
       // Assuming the date is stored as a Timestamp in Firestore
-      bornDate = DateFormat('yyyy-MM-dd').format(data['bornDate'].toDate());
+      birthDate = DateFormat('yyyy-MM-dd').format(data['birthDate'].toDate());
     }
 
     return UserModel(
@@ -31,7 +31,7 @@ class UserModel {
         email: data['email'],
         personNr: data['personNr'],
         role: data['role'],
-        bornDate: bornDate,
+        birthDate: birthDate,
         username: data['username']);
   }
 }

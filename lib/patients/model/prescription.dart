@@ -2,21 +2,22 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 
 class Prescription {
-  Prescription(
-      {required this.name, //to be removed
-      required this.dosage,
-      required this.endDate,
-      required this.frequency,
-      required this.startDate,
-      required this.times,
-      required this.takenMeds,
-      required this.id,
-      required this.physicianId,
-      required this.medicationId,
-      required this.motive});
+  Prescription({
+    required this.name, //to be removed
+    required this.dosage,
+    required this.endDate,
+    required this.frequency,
+    required this.startDate,
+    required this.times,
+    required this.takenMeds,
+    required this.prescriptionId,
+    required this.physicianId,
+    required this.medicationId,
+    required this.motive,
+  });
 
   final String name;
-  final String id;
+  final String prescriptionId;
   final int dosage;
   final DateTime endDate;
   final DateTime startDate;
@@ -50,7 +51,7 @@ class Prescription {
           data['startDate'].toDate().month, data['startDate'].toDate().day),
       times: times,
       takenMeds: takenMeds,
-      id: snapshot.id,
+      prescriptionId: snapshot.id,
       motive: data['motive'],
       physicianId: data['physicianId'],
       medicationId: data['medicationId'],

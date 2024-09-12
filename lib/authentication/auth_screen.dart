@@ -1,6 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 final _firebase = FirebaseAuth.instance;
 
@@ -20,6 +20,7 @@ class _AuthScreenState extends State<AuthScreen> {
   var _enteredPassword = '';
   var _enteredUsername = '';
   var _enteredPhysicianNr = '';
+  var _enteredMedicineSpecialty = '';
 
   void _submit() async {
     final isValid = _formKey.currentState!.validate();
@@ -38,7 +39,7 @@ class _AuthScreenState extends State<AuthScreen> {
             .set({
           'username': _enteredUsername,
           'email': _enteredEmail,
-          'role': 'Médico',
+          'role': "Médico $_enteredMedicineSpecialty",
           'personNr': _enteredPhysicianNr
         });
       }
@@ -59,12 +60,6 @@ class _AuthScreenState extends State<AuthScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              /* Container(
-                margin: const EdgeInsets.only(
-                    top: 30, bottom: 20, left: 20, right: 20),
-                width: 200,
-                child: Image.asset('assets/images/healthcare.png'),
-              ),*/
               Card(
                 margin: const EdgeInsets.all(20),
                 child: SingleChildScrollView(
@@ -122,6 +117,21 @@ class _AuthScreenState extends State<AuthScreen> {
                                   _enteredPhysicianNr = value!;
                                 },
                               ),
+                            if (!_isLogin)
+                              TextFormField(
+                                decoration: const InputDecoration(
+                                    labelText: 'Especialidade de Medicina'),
+                                enableSuggestions: false,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Por favor insira um valor válido';
+                                  }
+                                  return null;
+                                },
+                                onSaved: (value) {
+                                  _enteredMedicineSpecialty = value!;
+                                },
+                              ),
                             TextFormField(
                               decoration: const InputDecoration(
                                   labelText: 'Palavra-passe'),
@@ -151,9 +161,11 @@ class _AuthScreenState extends State<AuthScreen> {
                                   _isLogin = !_isLogin;
                                 });
                               },
-                              child: Text(_isLogin
-                                  ? 'Criar conta'
-                                  : 'Eu já tenho uma conta'),
+                              child: Text(
+                                _isLogin
+                                    ? 'Criar conta'
+                                    : 'Eu já tenho uma conta',
+                              ),
                             )
                           ],
                         )),

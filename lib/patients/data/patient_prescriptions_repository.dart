@@ -13,7 +13,7 @@ class PatientPrescriptionsRepository {
     return firestore
         .collection('users')
         .doc(patientId)
-        .collection('medications')
+        .collection('prescriptions')
         .snapshots()
         .map((snapshot) => snapshot.docs
             .map((doc) => Prescription.fromSnapshot(doc))

@@ -32,7 +32,7 @@ class _AddPrescriptionScreenState extends ConsumerState<AddPrescriptionScreen> {
     await FirebaseFirestore.instance
         .collection('users')
         .doc(widget.patiendId)
-        .collection('medications')
+        .collection('prescriptions')
         .add({
       'name': selectedMedication,
       'startDate': DateTime(
@@ -113,7 +113,7 @@ class _AddPrescriptionScreenState extends ConsumerState<AddPrescriptionScreen> {
                                     selectedMedication = value!;
                                     for (Medication med in medications) {
                                       if (med.name == value) {
-                                        selectedMedicationId = med.id;
+                                        selectedMedicationId = med.medicationId;
                                       }
                                     }
                                   });

@@ -28,12 +28,12 @@ class _PatientsScreenState extends ConsumerState<PatientsScreen> {
               patient.username.toLowerCase().contains(queryLower);
           final personNrMatches = patient.personNr.contains(query);
 
-          bool bornDateMatches = false;
-          if (patient.bornDate != null) {
-            bornDateMatches = patient.bornDate!.toString().contains(query);
+          bool birthDateMatches = false;
+          if (patient.birthDate != null) {
+            birthDateMatches = patient.birthDate!.toString().contains(query);
           }
 
-          return usernameMatches || personNrMatches || bornDateMatches;
+          return usernameMatches || personNrMatches || birthDateMatches;
         }).toList();
       });
     }
@@ -73,7 +73,7 @@ class _PatientsScreenState extends ConsumerState<PatientsScreen> {
                           context,
                           MaterialPageRoute(
                             builder: (context) => PatientDetails(
-                              patiendId: _filteredPatients[index].userId,
+                              patientId: _filteredPatients[index].userId,
                               patientUsername:
                                   _filteredPatients[index].username,
                             ),
@@ -85,9 +85,9 @@ class _PatientsScreenState extends ConsumerState<PatientsScreen> {
                       children: [
                         Text(
                             'Numero Utente: ${_filteredPatients[index].personNr}'),
-                        if (_filteredPatients[index].bornDate != null)
+                        if (_filteredPatients[index].birthDate != null)
                           Text(
-                              'Data Nascimento: ${_filteredPatients[index].bornDate}')
+                              'Data Nascimento: ${_filteredPatients[index].birthDate}')
                       ],
                     ),
                     trailing: const Icon(

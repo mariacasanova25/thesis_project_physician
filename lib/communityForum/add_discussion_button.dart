@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:thesis_project_physician/communityForum/new_discussion.dart';
 
-class NewdiscussionButton extends StatelessWidget {
-  const NewdiscussionButton({super.key});
+class AddDiscussionButton extends StatelessWidget {
+  const AddDiscussionButton({super.key});
 
   @override
   Widget build(BuildContext context) {

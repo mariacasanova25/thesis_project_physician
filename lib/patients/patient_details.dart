@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:thesis_project_physician/patients/add_prescription_screen.dart';
+import 'package:thesis_project_physician/patients/add_prescription_button.dart';
 import 'package:thesis_project_physician/patients/data/patient_prescriptions_repository.dart';
 import 'package:thesis_project_physician/profileScreen/data/user_repository.dart';
 
 class PatientDetails extends ConsumerWidget {
   const PatientDetails(
-      {super.key, required this.patiendId, required this.patientUsername});
-  final String patiendId;
+      {super.key, required this.patientId, required this.patientUsername});
+  final String patientId;
   final String patientUsername;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final patientPrescriptionsAsync =
-        ref.watch(watchPatientPrescriptionsProvider(patiendId));
+        ref.watch(watchPatientPrescriptionsProvider(patientId));
     return Scaffold(
       appBar: AppBar(
         title: Text(patientUsername),
@@ -75,17 +75,8 @@ class PatientDetails extends ConsumerWidget {
           },
           error: (error, stackTrace) => Center(child: Text(error.toString())),
           loading: () => const Center(child: CircularProgressIndicator())),
-      floatingActionButton: ElevatedButton(
-        child: const Text('Nova Prescrição'),
-        onPressed: () {
-          Navigator.push(context, MaterialPageRoute(
-            builder: (context) {
-              return AddPrescriptionScreen(
-                patiendId: patiendId,
-              );
-            },
-          ));
-        },
+      floatingActionButton: AddPrescriptionButton(
+        patientId: patientId,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
