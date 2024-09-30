@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:thesis_project_physician/communityForum/add_discussion_button.dart';
 import 'package:thesis_project_physician/communityForum/data/discussions_repository.dart';
-import 'package:thesis_project_physician/communityForum/discussions_list.dart';
 import 'package:thesis_project_physician/communityForum/model/discussion.dart';
+import 'package:thesis_project_physician/communityForum/presentation/add_discussion_button.dart';
+import 'package:thesis_project_physician/communityForum/presentation/discussions_list.dart';
 
 class CommunityForumScreen extends ConsumerStatefulWidget {
   const CommunityForumScreen({super.key});

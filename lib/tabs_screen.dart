@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:thesis_project_physician/communityForum/community_forum_screen.dart';
-import 'package:thesis_project_physician/patients/patients_screen.dart';
-import 'package:thesis_project_physician/profileScreen/profile_screen.dart';
+import 'package:thesis_project_physician/communityForum/presentation/community_forum_screen.dart';
+import 'package:thesis_project_physician/patients/presentation/patients_screen.dart';
+import 'package:thesis_project_physician/profile/presentation/profile_screen.dart';
 
 class TabsScreen extends StatefulWidget {
   const TabsScreen({super.key});
@@ -23,7 +23,7 @@ class _TabsScreenState extends State<TabsScreen> {
   }
 
   String get activePageTitle => switch (currentPage) {
-        0 => 'Utentes',
+        0 => 'Pacientes',
         1 => 'Fórum Comunitário',
         _ => '',
       };
@@ -63,10 +63,11 @@ class _TabsScreenState extends State<TabsScreen> {
       bottomNavigationBar: BottomNavigationBar(
         onTap: selectPage,
         currentIndex: currentPage,
+        showUnselectedLabels: false,
         items: const [
           BottomNavigationBarItem(
-            icon: Icon(Icons.medication),
-            label: 'Medicamentos',
+            icon: Icon(Icons.personal_injury_outlined),
+            label: 'Pacientes',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.people_outline),

@@ -1,7 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:thesis_project_physician/profileScreen/data/user_repository.dart';
+import 'package:thesis_project_physician/profile/data/user_repository.dart';
 
 class ProfileScreen extends ConsumerStatefulWidget {
   const ProfileScreen({super.key});
@@ -15,6 +16,20 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   String initEmail = '';
   String initRole = 'patient';
   String initPersonalNr = '';
+
+  Future<void> deleteAccount() async {
+    try {
+      final user = FirebaseAuth.instance.currentUser!;
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .delete();
+      await user.delete();
+      if (mounted) Navigator.popUntil(context, (route) => route.isFirst);
+    } catch (e) {
+      print('Error during account deletion: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,6 +76,14 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                   const SizedBox(height: 16),
                   Text('Cédula Profissional', style: textTheme.headlineSmall),
                   Text(user.personNr, style: textTheme.headlineLarge),
+                  const SizedBox(height: 32),
+                  Center(
+                    child: OutlinedButton(
+                        onPressed: deleteAccount,
+                        child: Text("Apagar conta",
+                            style: TextStyle(
+                                color: Theme.of(context).colorScheme.error))),
+                  )
                 ],
               ),
             );

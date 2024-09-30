@@ -3,8 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:thesis_project_physician/communityForum/data/messages_repository.dart';
-import 'package:thesis_project_physician/communityForum/message_bubble.dart';
-import 'package:thesis_project_physician/communityForum/new_message.dart';
+import 'package:thesis_project_physician/communityForum/presentation/message_bubble.dart';
+import 'package:thesis_project_physician/communityForum/presentation/new_message.dart';
 
 class DiscussionDetailsScreen extends ConsumerWidget {
   const DiscussionDetailsScreen({
