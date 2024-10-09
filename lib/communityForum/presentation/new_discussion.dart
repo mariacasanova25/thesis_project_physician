@@ -72,6 +72,9 @@ class _NewMessageState extends State<NewDiscussion> {
                     onPressed: _submitDiscussion,
                     child: const Text('Adicionar'),
                   ),
+                  const SizedBox(
+                    width: 16,
+                  )
                 ],
               ),
             ],
